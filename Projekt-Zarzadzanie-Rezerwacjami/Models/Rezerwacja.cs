@@ -1,6 +1,5 @@
 ﻿
 using Projekt_Zarzadzanie_Rezerwacjami.Data;
-using Projekt_Zarzadzanie_Rezerwacjami.Migrations;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

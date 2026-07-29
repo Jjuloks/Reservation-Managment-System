@@ -30,14 +30,16 @@ namespace Projekt_Zarzadzanie_Rezerwacjami.Models
         public int Id { get; set; }
 
         [Required]
+        [StringLength(100)]
         [ValidLogin(ErrorMessage = "This username is already in use.")]
-        public string Login { get; set; }
+        public string Login { get; set; } = string.Empty;
 
         [Required]
- 
-        public string Password { get; set; }
+        [StringLength(100, MinimumLength = 6)]
+        public string Password { get; set; } = string.Empty;
 
         [Required]
-        public string Role { get; set; }
+        [RegularExpression("^(admin|user)$")]
+        public string Role { get; set; } = "user";
     }
 }

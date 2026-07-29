@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Projekt_Zarzadzanie_Rezerwacjami.Data;
 using Projekt_Zarzadzanie_Rezerwacjami.Models;
@@ -8,6 +9,7 @@ builder.Services.AddDbContext<Projekt_Zarzadzanie_RezerwacjamiContext>(options =
         ?? throw new InvalidOperationException("Connection string not found")));
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IPasswordHasher<Uzytkownik>, PasswordHasher<Uzytkownik>>();
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -22,6 +24,7 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     SeedData.Initialize(services);
+    await UserPasswordDataMigration.InitializeAsync(services, builder.Configuration);
 }
 app.UseRouting();
 app.UseSession();

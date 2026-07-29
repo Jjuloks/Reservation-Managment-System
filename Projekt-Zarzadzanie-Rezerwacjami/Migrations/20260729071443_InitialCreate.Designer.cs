@@ -12,8 +12,8 @@ using Projekt_Zarzadzanie_Rezerwacjami.Data;
 namespace Projekt_Zarzadzanie_Rezerwacjami.Migrations
 {
     [DbContext(typeof(Projekt_Zarzadzanie_RezerwacjamiContext))]
-    [Migration("20260311121228_InitialSync")]
-    partial class InitialSync
+    [Migration("20260729071443_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,7 +33,7 @@ namespace Projekt_Zarzadzanie_Rezerwacjami.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("Duration")
+                    b.Property<int>("Duration")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsExclusive")
@@ -47,13 +47,13 @@ namespace Projekt_Zarzadzanie_Rezerwacjami.Migrations
                     b.Property<DateTime>("ReservationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("RoomId")
+                    b.Property<int?>("RoomId")
                         .HasColumnType("int");
 
                     b.Property<int>("Rozmiar")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Sala")
+                    b.Property<int>("Sala")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -66,10 +66,7 @@ namespace Projekt_Zarzadzanie_Rezerwacjami.Migrations
             modelBuilder.Entity("Projekt_Zarzadzanie_Rezerwacjami.Models.Room", b =>
                 {
                     b.Property<int>("SalaId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SalaId"));
 
                     b.Property<int>("Capacity")
                         .HasColumnType("int");
@@ -78,21 +75,92 @@ namespace Projekt_Zarzadzanie_Rezerwacjami.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("salaName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("SalaId");
 
                     b.ToTable("Room");
+
+                    b.HasData(
+                        new
+                        {
+                            SalaId = 0,
+                            Capacity = 6,
+                            HasTv = true,
+                            salaName = "S01"
+                        },
+                        new
+                        {
+                            SalaId = 1,
+                            Capacity = 8,
+                            HasTv = true,
+                            salaName = "S02"
+                        },
+                        new
+                        {
+                            SalaId = 2,
+                            Capacity = 4,
+                            HasTv = false,
+                            salaName = "S03"
+                        },
+                        new
+                        {
+                            SalaId = 3,
+                            Capacity = 3,
+                            HasTv = false,
+                            salaName = "S04"
+                        },
+                        new
+                        {
+                            SalaId = 4,
+                            Capacity = 10,
+                            HasTv = false,
+                            salaName = "S05"
+                        },
+                        new
+                        {
+                            SalaId = 5,
+                            Capacity = 4,
+                            HasTv = true,
+                            salaName = "S06"
+                        });
+                });
+
+            modelBuilder.Entity("Projekt_Zarzadzanie_Rezerwacjami.Models.Uzytkownik", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Login")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Login")
+                        .IsUnique();
+
+                    b.ToTable("Uzytkownik");
                 });
 
             modelBuilder.Entity("Projekt_Zarzadzanie_Rezerwacjami.Models.Rezerwacja", b =>
                 {
                     b.HasOne("Projekt_Zarzadzanie_Rezerwacjami.Models.Room", "Room")
                         .WithMany("Rezerwacje")
-                        .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RoomId");
 
                     b.Navigation("Room");
                 });

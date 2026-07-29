@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Projekt_Zarzadzanie_Rezerwacjami.Data;
 using Projekt_Zarzadzanie_Rezerwacjami.Models;
 
@@ -8,10 +9,14 @@ namespace Projekt_Zarzadzanie_Rezerwacjami.Controllers
     public class UzytkownicyController : Controller
     {
         private readonly Projekt_Zarzadzanie_RezerwacjamiContext _context;
+        private readonly IPasswordHasher<Uzytkownik> _passwordHasher;
 
-        public UzytkownicyController(Projekt_Zarzadzanie_RezerwacjamiContext context)
+        public UzytkownicyController(
+            Projekt_Zarzadzanie_RezerwacjamiContext context,
+            IPasswordHasher<Uzytkownik> passwordHasher)
         {
             _context = context;
+            _passwordHasher = passwordHasher;
         }
 
         private bool IsAdmin()
@@ -45,6 +50,7 @@ namespace Projekt_Zarzadzanie_Rezerwacjami.Controllers
 
             if (ModelState.IsValid)
             {
+                user.Password = _passwordHasher.HashPassword(user, user.Password);
                 _context.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

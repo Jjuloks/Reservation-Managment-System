@@ -73,7 +73,6 @@
                 <thead>
                     <tr>
                         <th>Login</th>
-                        <th>Password</th>
                         <th>Role</th>
                         <th></th>
                 </thead>
@@ -82,16 +81,6 @@
         {
             <tr>
                 <td>@item.Login</td>
-                <td>
-                    @if (item.Role == "user")
-                    {
-                        @item.Password
-                    }
-                    else
-                    {
-                        @Html.Raw("🤫")
-                    }
-                </td>
                 <td>@item.Role</td>
                 <td class="text-end">
                     <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-table-delete">Delete</a>
