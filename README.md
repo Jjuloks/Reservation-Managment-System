@@ -54,6 +54,17 @@ http://localhost:5020
 
 Początkowy administrator jest tworzony tylko wtedy, gdy tabela użytkowników jest pusta. Przy kolejnych uruchomieniach zmienne `InitialAdmin` nie zmieniają istniejącego konta.
 
+## Przykładowe konta
+
+W obecnej lokalnej bazie danych dostępne są:
+
+| Rola | Login | Hasło |
+| --- | --- | --- |
+| Administrator | `a` | `1` |
+| Użytkownik | `b` | `1` |
+
+Konta służą wyłącznie do lokalnego testowania. Nie są automatycznie tworzone na świeżej bazie danych i nie powinny być używane w środowisku produkcyjnym.
+
 ## Role
 
 - `admin` — zarządzanie rezerwacjami i użytkownikami,
